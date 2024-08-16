@@ -7,16 +7,21 @@ import {
   Platform,
 } from "react-native";
 import CustomPressable from "../UI/CustomPressable";
+import { useNavigation } from "@react-navigation/native";
+import HeadingMedium from "../UI/HeadingMedium";
+import MealDetailsUI from "../UI/MealDetails";
 
 interface Props {
+  id: string;
   title: string;
   imageUrl: string;
   ingredients: string[];
   affordability: string;
   complexity: string;
-  duration: string;
+  duration: number;
 }
 function MealItem({
+  id,
   title,
   imageUrl,
   ingredients,
@@ -24,24 +29,21 @@ function MealItem({
   complexity,
   duration,
 }: Props) {
+  const navigation: any = useNavigation();
   return (
     <View style={styles.outerBox}>
-      <CustomPressable>
+      {/* <CustomPressable> */}
+      <CustomPressable
+        pressAction={() => navigation.navigate("MealDetails", { id })}
+      >
         <View style={styles.innerBox}>
           <Image style={styles.image} source={{ uri: imageUrl }} />
-          <Text style={styles.title}>{title}</Text>
-          <View
-            style={{
-              alignItems: "center",
-              gap: 6,
-              flexDirection: "row",
-              marginVertical: 8,
-            }}
-          >
-            <Text style={styles.smallText}>{duration}m</Text>
-            <Text style={styles.smallText}>{complexity}</Text>
-            <Text style={styles.smallText}>{affordability}</Text>
-          </View>
+          <HeadingMedium title={title} />
+          <MealDetailsUI
+            duration={duration}
+            complexity={complexity}
+            affordability={affordability}
+          />
         </View>
       </CustomPressable>
     </View>
